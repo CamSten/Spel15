@@ -27,6 +27,7 @@ public class GamePanel extends JFrame {
         gameComponents.add(row1);
         gameComponents.add(row2);
         gameComponents.add(row3);
+        pack();
 
     }
 }
