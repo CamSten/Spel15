@@ -1,6 +1,10 @@
 package Spel15;
 
-public class Tile {
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class Tile extends JButton {
     private int row;
     private int col;
     private int value;
@@ -12,6 +16,11 @@ public class Tile {
         this.col = col;
         this.value = value;
     }
+
+    public Tile (int value) {
+        this.value = value;
+    }
+
     public int getRow() {
         return row;
     }
@@ -21,9 +30,14 @@ public class Tile {
     public int getValue (){
         return value;
     }
+    public void setValue (int i){
+        this.value = i;
+    }
+    public boolean getStatus(){
+        return isActive;
+    }
     public int[] getPosition(){
-        int[]position = new int[]{row, col};
-        return position;
+        return new int[]{row, col};
     }
     public void setPosition(int[]position){
         this.row = position[0];
