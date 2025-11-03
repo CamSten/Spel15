@@ -7,8 +7,10 @@ import java.awt.event.ActionListener;
 public class GameLogics implements ActionListener {
     private Board board;
     private Tile activeTile = null;
+    private GamePanel panel = new GamePanel(board);
 
     public GameLogics(Board board) {
+        this.panel = panel;
         this.board = board;
         for (Tile t : board.tiles) {
             t.addActionListener(this);
@@ -18,7 +20,6 @@ public class GameLogics implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Tile clicked = (Tile) e.getSource();
         checkTileAction(clicked);
-
     }
     public void checkTileAction(Tile clicked) {
         if (activeTile == null) {
@@ -37,6 +38,6 @@ public class GameLogics implements ActionListener {
         }
     }
     public void endGame () {
-        board.showEndMessage();
+        panel.showEndMessage();
     }
 }

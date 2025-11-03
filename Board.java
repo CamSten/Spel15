@@ -8,14 +8,14 @@ import java.util.Random;
 
 public class Board extends JFrame {
     public List<Tile> tiles = new ArrayList<>();
-    public List<JButton>buttons = new ArrayList<>();
+    public List<Button>buttons = new ArrayList<>();
 
 
     public Board() {
         addTiles();
         JPanel gameBoard = new JPanel(new GridLayout(4, 4));
-        for (JButton jb : buttons) {
-            gameBoard.add(jb);
+        for (Button button : buttons) {
+            gameBoard.add(button);
         }
     }
 
@@ -26,7 +26,8 @@ public class Board extends JFrame {
             int col = i % 4;
             Tile tile = new Tile(row, col, values.get(i));
             tiles.add(tile);
-            buttons.add(tile);
+            Button button = new Button(tile);
+            buttons.add(button);
         }
     }
 
@@ -91,10 +92,6 @@ public class Board extends JFrame {
         tile1.setValue(tile2.getValue());
         tile2.setPosition(tile1Position);
         tile2.setValue(tempValue);
-    }
-
-    public void showEndMessage() {
-
     }
 }
 /*       List<Tile>tilesForRow = createTileRow(1);

@@ -3,7 +3,7 @@ package Spel15;
 import javax.swing.*;
 import java.awt.*;
 
-public class Button {
+public class Button extends  JButton{
 
 
     public Button (Tile tile) {
