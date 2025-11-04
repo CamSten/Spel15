@@ -15,7 +15,7 @@ public class Board extends JPanel {
 
     public Board() {
         setLayout(new GridLayout(4, 4));
-        System.out.println("Ange 1 för slumpade siffror.\nAnge 2 för siffror i ordning: ");
+        System.out.println(tileLayout);
         String choice = scan.nextLine();
         switch (choice) {
             case "1": {
@@ -163,6 +163,7 @@ public class Board extends JPanel {
         tile1.adjustTile(tile1.getValue());
         tile2.adjustTile(tile2.getValue());
     }
+    private String tileLayout = "Ange 1 för slumpade siffror.\nAnge 2 för siffror i ordning: ";
 
 }
 

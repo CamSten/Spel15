@@ -26,6 +26,7 @@ public class GameLogics implements ActionListener {
         Tile emptyTile = board.getEmptyTile();
         if (clicked.getValue() != 0 && emptyTile != null && board.checkIfAdjacent(emptyTile, clicked)) {
             board.switchTiles(emptyTile, clicked);
+            panel.showMoves();
             if (board.checkIfSolved()) {
                 endGame();
                 System.out.println("checkTileAction is working");
@@ -34,5 +35,6 @@ public class GameLogics implements ActionListener {
     }
     public void endGame () {
         panel.showEndMessage();
+
     }
 }

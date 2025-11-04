@@ -8,10 +8,14 @@ import java.awt.event.ActionListener;
 public class GamePanel extends JFrame {
     private Board board;
     private boolean solved = false;
+    private Scores scores;
+    JLabel displayMoves;
     JPanel centerPanel;
+    JPanel bottomPanel;
 
-    public GamePanel (Board board){
+    public GamePanel (Board board, Scores scores){
         this.board = board;
+        this.scores = scores;
         setLayout(new BorderLayout());
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -33,29 +37,21 @@ public class GamePanel extends JFrame {
         buttonScores.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                showScores();
+                showHighScore();
             }
         });
-        JPanel options = new JPanel(new BorderLayout());
-        options.add(buttonNewGame, BorderLayout.WEST);
-        options.add(buttonScores, BorderLayout.EAST);
+        bottomPanel = new JPanel(new BorderLayout());
+        displayMoves = new JLabel("0");
+        bottomPanel.add(buttonNewGame, BorderLayout.WEST);
+        bottomPanel.add(displayMoves, BorderLayout.CENTER);
+        bottomPanel.add(buttonScores, BorderLayout.EAST);
 
         add(gameName, BorderLayout.NORTH);
         centerPanel = new JPanel();
         centerPanel.add(board);
         add(centerPanel, BorderLayout.CENTER);
-        add(options, BorderLayout.SOUTH);
+        add(bottomPanel, BorderLayout.SOUTH);
         pack();
-    }
-    private JPanel boardOptions (boolean solved) {
-        JPanel thisBoardOption;
-        if (!solved) {
-            thisBoardOption = board;
-        }
-        else {
-            thisBoardOption = whenSolved();
-        }
-        return thisBoardOption;
     }
     public void showEndMessage() {
         solved = true;
@@ -63,6 +59,7 @@ public class GamePanel extends JFrame {
         centerPanel.add(whenSolved());
         centerPanel.setBackground(Color.green);
         add(centerPanel);
+        scores.saveScore();
         revalidate();
         repaint();
         pack();
@@ -76,9 +73,28 @@ public class GamePanel extends JFrame {
         return endBoard;
     }
     private void newGame() {
+
         board.addTilesInOrder();
     }
-    public void showScores(){
 
+    public void showMoves(){
+        scores.addMove();
+        if(scores.getMovesInt() > 0) {
+            displayMoves.setText(scores.getMovesString());
+            revalidate();
+            repaint();
+            pack();
+        }
+    }
+    private void showHighScore () {
+        centerPanel.removeAll();
+        displayMoves.setText("");
+        JPanel highscores = new JPanel();
+        highscores.add(scores.scorePanel());
+        centerPanel.add(highscores);
+        add(centerPanel);
+        revalidate();
+        repaint();
+        pack();
     }
 }
