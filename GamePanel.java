@@ -2,45 +2,83 @@ package Spel15;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class GamePanel extends JFrame {
-    JPanel gameComponents = new JPanel(new GridLayout(3, 1));
-    JPanel row1 = new JPanel(new FlowLayout());
-    JPanel row2 = new JPanel(new FlowLayout());
-    JPanel row3 = new JPanel(new FlowLayout());
+    private Board board;
+    private boolean solved = false;
+    JPanel centerPanel;
 
     public GamePanel (Board board){
-
+        this.board = board;
+        setLayout(new BorderLayout());
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setBackground(Color.lightGray);
 
-
         JLabel gameName = new JLabel("15 Puzzle");
-        row1.add(gameName);
-
-
-        row2.add(board);
-
 
         JButton buttonNewGame = new JButton();
         buttonNewGame.setText("New game");
-        row3.add(buttonNewGame);
+        buttonNewGame.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed (ActionEvent e) {
+                newGame();
+            }
+        });
+        JButton buttonScores = new JButton();
+        buttonScores.setText("Highscores");
+        buttonScores.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showScores();
+            }
+        });
+        JPanel options = new JPanel(new BorderLayout());
+        options.add(buttonNewGame, BorderLayout.WEST);
+        options.add(buttonScores, BorderLayout.EAST);
 
-        gameComponents.add(row1);
-        gameComponents.add(row2);
-        gameComponents.add(row3);
+        add(gameName, BorderLayout.NORTH);
+        centerPanel = new JPanel();
+        centerPanel.add(board);
+        add(centerPanel, BorderLayout.CENTER);
+        add(options, BorderLayout.SOUTH);
         pack();
-
+    }
+    private JPanel boardOptions (boolean solved) {
+        JPanel thisBoardOption;
+        if (!solved) {
+            thisBoardOption = board;
+        }
+        else {
+            thisBoardOption = whenSolved();
+        }
+        return thisBoardOption;
     }
     public void showEndMessage() {
-        JLabel endMessage = new JLabel("Grattis! Du vann!");
-        endMessage.setSize(400, 400);
-        endMessage.setBackground(Color.green);
-        row2.removeAll();
-        row2.add(endMessage);
+        solved = true;
+        centerPanel.removeAll();
+        centerPanel.add(whenSolved());
+        centerPanel.setBackground(Color.green);
+        add(centerPanel);
+        revalidate();
+        repaint();
         pack();
+    }
+    private JPanel whenSolved () {
+        JPanel endBoard = new JPanel();
+        JLabel endMessage = new JLabel("Grattis! Du vann!");
+        endBoard.setBackground(Color.green);
+        endBoard.add(endMessage);
+        pack();
+        return endBoard;
+    }
+    private void newGame() {
+        board.addTilesInOrder();
+    }
+    public void showScores(){
 
     }
 }

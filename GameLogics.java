@@ -6,12 +6,11 @@ import java.awt.event.ActionListener;
 
 public class GameLogics implements ActionListener {
     private Board board;
-    private Tile activeTile = null;
-    private GamePanel panel = new GamePanel(board);
+    private GamePanel panel;
 
-    public GameLogics(Board board) {
-        this.panel = panel;
+    public GameLogics(Board board, GamePanel panel) {
         this.board = board;
+        this.panel = panel;
         for (Tile t : board.tiles) {
             t.addActionListener(this);
         }
@@ -19,22 +18,18 @@ public class GameLogics implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         Tile clicked = (Tile) e.getSource();
-        checkTileAction(clicked);
+        if  (clicked != null){
+            checkTileAction(clicked);
+        }
     }
     public void checkTileAction(Tile clicked) {
-        if (activeTile == null) {
-            activeTile = clicked;
-        }
-        else if (clicked.getValue() == 0)  {
-            if(board.checkIfAdjacent(activeTile, clicked)) {
-                board.switchTiles(activeTile, clicked);
-                if (board.checkIfSolved()) {
-                    endGame();
-                }
+        Tile emptyTile = board.getEmptyTile();
+        if (clicked.getValue() != 0 && emptyTile != null && board.checkIfAdjacent(emptyTile, clicked)) {
+            board.switchTiles(emptyTile, clicked);
+            if (board.checkIfSolved()) {
+                endGame();
+                System.out.println("checkTileAction is working");
             }
-        }
-        else {
-            activeTile = clicked;
         }
     }
     public void endGame () {

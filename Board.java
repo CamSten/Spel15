@@ -5,32 +5,79 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
 
-public class Board extends JFrame {
+public class Board extends JPanel {
     public List<Tile> tiles = new ArrayList<>();
-    public List<Button>buttons = new ArrayList<>();
+    private Tile tile;
+    Scanner scan = new Scanner(System.in);
 
 
     public Board() {
-        addTiles();
-        JPanel gameBoard = new JPanel(new GridLayout(4, 4));
-        for (Button button : buttons) {
-            gameBoard.add(button);
+        setLayout(new GridLayout(4, 4));
+        System.out.println("Ange 1 för slumpade siffror.\nAnge 2 för siffror i ordning: ");
+        String choice = scan.nextLine();
+        switch (choice) {
+            case "1": {
+                addTiles();
+                break;
+            }
+            case "2": {
+                addTilesInOrder();
+                break;
+            }
+            default: {
+                System.out.println("Inget giltigt svarsalternativ har angivits.");
+            }
         }
     }
 
     public void addTiles() {
         List<Integer> values = getRandomValues();
-        for (int i = 0; i < values.size(); i++) {
-            int row = (i / 4);
-            int col = i % 4;
-            Tile tile = new Tile(row, col, values.get(i));
-            tiles.add(tile);
-            Button button = new Button(tile);
-            buttons.add(button);
+        if (tiles.size() == 16) {
+            for (int i = 0; i < tiles.size(); i++) {
+                Tile tile = tiles.get(i);
+                int value = values.get(i);
+                tile.setValue(value);
+                tile.adjustTile(value);
+            }
+        } else {
+            tiles.clear();
+            removeAll();
+            for (int i = 0; i < values.size(); i++) {
+                int row = (i / 4);
+                int col = i % 4;
+                Tile tile = new Tile(row, col, values.get(i));
+                tiles.add(tile);
+                add(tile);
+            }
         }
+        revalidate();
+        repaint();
     }
-
+    public void addTilesInOrder() {
+        List<Integer> values = getOrderedValues();
+        if (tiles.size() == 16) {
+            for (int i = 0; i < tiles.size(); i++) {
+                Tile tile = tiles.get(i);
+                int value = values.get(i);
+                tile.setValue(value);
+                tile.adjustTile(value);
+            }
+        } else {
+            tiles.clear();
+            removeAll();
+            for (int i = 0; i < values.size(); i++) {
+                int row = (i / 4);
+                int col = i % 4;
+                Tile tile = new Tile(row, col, values.get(i));
+                tiles.add(tile);
+                add(tile);
+            }
+        }
+        revalidate();
+        repaint();
+    }
     public List<Integer> getRandomValues() {
         List<Integer> values = new ArrayList<>();
         Random randomize = new Random();
@@ -49,6 +96,15 @@ public class Board extends JFrame {
             }
         }
         return values;
+    }
+    public List<Integer> getOrderedValues() {
+        List<Integer> valuesInOrder = new ArrayList<>();{
+            for (int i = 1; i < 16; i++) {
+                valuesInOrder.add(i);
+            }
+        }
+        valuesInOrder.add(0);
+        return valuesInOrder;
     }
 
     public List<Tile> createTileRow(int rowNumber) {
@@ -73,46 +129,40 @@ public class Board extends JFrame {
     }
     public boolean checkIfSolved() {
         for (int r = 0; r < 4; r++) {
-            List<Tile> row1 = createTileRow(r);
-            for (int i = 0; i < row1.size(); i++) {
-                int expectedValue = r * 4 + i;
-                if (row1.get(i).getValue() != expectedValue) {
+            List<Tile> row = createTileRow(r);
+            for (int i = 0; i < row.size(); i++) {
+                int index = r * 4 + i;
+                int expected;
+                if (index == 15) {
+                    expected = 0;
+                }
+                else  {
+                    expected = index+1;
+                }
+                if (row.get(i).getValue() != expected) {
                     return false;
                 }
             }
         }
+        System.out.println("checkIfSolved is working");
         return true;
+    }
+    public Tile getEmptyTile(){
+        for (Tile tile : tiles) {
+            if (tile.getValue() == 0) {
+                return tile;
+            }
+        }
+        return null;
     }
 
     public void switchTiles(Tile tile1, Tile tile2) {
         int tempValue = tile1.getValue();
-        int[] tile1Position = tile1.getPosition();
-        int[] tile2Position = tile2.getPosition();
-        tile1.setPosition(tile2Position);
         tile1.setValue(tile2.getValue());
-        tile2.setPosition(tile1Position);
         tile2.setValue(tempValue);
+        tile1.adjustTile(tile1.getValue());
+        tile2.adjustTile(tile2.getValue());
     }
+
 }
-/*       List<Tile>tilesForRow = createTileRow(1);
-        for (Tile t : tilesForRow) {
-            row1.add(t);
-        }
-
-        JPanel row2 = new JPanel(new GridLayout(1, 4));
-        tilesForRow = createTileRow(2);
-        for (Tile t : tilesForRow) {
-            row2.add(t);
-        }
-
-        JPanel row3 = new JPanel(new GridLayout(1, 4));
-        tilesForRow = createTileRow(3);
-        for (Tile t : tilesForRow) {
-            row3.add(t);
-        }
-        JPanel row4 = new JPanel(new GridLayout(1, 4));
-        tilesForRow = createTileRow(4);
-        for (Tile t : tilesForRow) {
-            row4.add(t);
-        }*/
 
