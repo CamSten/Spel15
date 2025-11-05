@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class Board extends JPanel {
     public List<Tile> tiles = new ArrayList<>();
-    private Tile tile;
+    private List<Integer>values = new ArrayList<>();
     Scanner scan = new Scanner(System.in);
 
 
@@ -33,27 +33,28 @@ public class Board extends JPanel {
     }
 
     public void addTiles() {
-        List<Integer> values = getRandomValues();
-        if (tiles.size() == 16) {
-            for (int i = 0; i < tiles.size(); i++) {
-                Tile tile = tiles.get(i);
-                int value = values.get(i);
-                tile.setValue(value);
-                tile.adjustTile(value);
+        values = getValuesForSolvablePuzzle();
+
+            if (tiles.size() == 16) {
+                for (int i = 0; i < tiles.size(); i++) {
+                    Tile tile = tiles.get(i);
+                    int value = values.get(i);
+                    tile.setValue(value);
+                    tile.adjustTile(value);
+                }
+            } else {
+                tiles.clear();
+                removeAll();
+                for (int i = 0; i < values.size(); i++) {
+                    int row = (i / 4);
+                    int col = i % 4;
+                    Tile tile = new Tile(row, col, values.get(i));
+                    tiles.add(tile);
+                    add(tile);
+                }
             }
-        } else {
-            tiles.clear();
-            removeAll();
-            for (int i = 0; i < values.size(); i++) {
-                int row = (i / 4);
-                int col = i % 4;
-                Tile tile = new Tile(row, col, values.get(i));
-                tiles.add(tile);
-                add(tile);
-            }
-        }
-        revalidate();
-        repaint();
+            revalidate();
+            repaint();
     }
     public void addTilesInOrder() {
         List<Integer> values = getOrderedValues();
@@ -93,6 +94,17 @@ public class Board extends JPanel {
             }
             if (!used) {
                 values.add(randomInt);
+            }
+        }
+        return values;
+    }
+    private List<Integer> getValuesForSolvablePuzzle() {
+        boolean solvable = false;
+        while (!solvable) {
+            List<Integer> tempValues = getRandomValues();
+            values = tempValues;
+            if(checkIfSolvable()) {
+                solvable = true;
             }
         }
         return values;
@@ -163,7 +175,60 @@ public class Board extends JPanel {
         tile1.adjustTile(tile1.getValue());
         tile2.adjustTile(tile2.getValue());
     }
-    private String tileLayout = "Ange 1 för slumpade siffror.\nAnge 2 för siffror i ordning: ";
+    /*If N(width is odd,
+     *   then puzzle instance is solvable if number of inversions is even in the input state.
+     * If N is even, puzzle instance is solvable if:
+     *   the blank is on an even row counting from the bottom
+     *   (second-last, fourth-last, etc.)
+     *   AND number of inversions is odd.
+     *  OR the blank is on an odd row counting from the bottom
+     *   (last, third-last, fifth-last, etc.)
+     *   AND number of inversions is even.
+     *  For all other cases, the puzzle instance is not solvable.*/
+    public boolean checkIfSolvable() {
+        int numberOfTiles = values.size();
+        int gridWidth = (int) Math.sqrt(numberOfTiles);
 
+        int emptyIndex = values.indexOf(0);
+        int rowOfEmptyTileFromBottom = gridWidth - (emptyIndex/gridWidth);
+
+        if (gridWidth%2 !=0){
+            if (checkIfEvenInversions()){
+                return true;
+            }
+        }
+        else {
+            if (rowOfEmptyTileFromBottom % 2 != 0) {
+                if (checkIfEvenInversions()) {
+                    return true;
+                }
+            } else {
+                if (!checkIfEvenInversions()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean checkIfEvenInversions () {
+        int count = 0;
+        for (int i = 0; i < values.size(); i++) {
+            int value1 = values.get(i);
+            if (value1 != 0) {
+                for (int j = i + 1; j < values.size(); j++) {
+                    int value2 = values.get(j);
+                    if (value2 != 0 && value1 > value2) {
+                        count++;
+                    }
+                }
+            }
+        }
+        if (count % 2 == 0) {
+            return true;
+        }
+        return false;
+    }
+    private String tileLayout = "Ange 1 för slumpade siffror.\nAnge 2 för siffror i ordning: ";
 }
 
