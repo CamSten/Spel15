@@ -16,6 +16,7 @@ import java.util.List;
 
 public class Scores {
     private int moves = 0;
+    private GamePanel panel;
 
     public Scores () {
     }
@@ -29,6 +30,9 @@ public class Scores {
     public void addMove () {
         moves+=1;
     }
+    public void resetScore() {
+        moves = 0;
+    }
     private Path getPath () {
         Path path = Paths.get("src/Spel15/Scores.txt");
         if (!Files.exists(path)) {
@@ -40,13 +44,13 @@ public class Scores {
         }
         return path;
     }
-    public void saveScore () {
+    public void saveScore (String userName) {
         Path saveTo = getPath();
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMMM yyyy HH:mm");
         String formatted = now.format(formatter);
             try (BufferedWriter saving = Files.newBufferedWriter(saveTo, StandardOpenOption.CREATE, StandardOpenOption.APPEND)) {
-                saving.write( moves + ";" + formatted + "\n");
+                saving.write( userName + ";" +moves + ";" + formatted + "\n");
             }
             catch (Exception e) {
                 e.printStackTrace();
@@ -79,11 +83,14 @@ public class Scores {
         String printout = "";
         if (!movesAndDate.isEmpty()) {
             for (int i = 0; i < movesAndDate.size(); i++) {
-                if (type.equals("moveCount")) {
+                if (type.equals("name")) {
                     whatToPrint = movesAndDate.get(i)[0];
                 }
-                else {
+                else if (type.equals("moveCount")) {
                     whatToPrint = movesAndDate.get(i)[1];
+                }
+                else {
+                    whatToPrint = movesAndDate.get(i)[2];
                 }
                 printout = printout + whatToPrint + "\n";
             }
@@ -98,14 +105,17 @@ public class Scores {
 
         JPanel centerPanel = new JPanel(new BorderLayout());
 
-        JPanel scoreHeader = new JPanel(new GridLayout(1,2));
+        JPanel scoreHeader = new JPanel(new GridLayout(1,3));
+        JLabel showName = new JLabel("Namn:");
         JLabel showMoves = new JLabel("Antal drag:");
         JLabel showDate = new JLabel("Datum:");
+        scoreHeader.add(showName);
         scoreHeader.add(showMoves);
         scoreHeader.add(showDate);
         centerPanel.add(scoreHeader, BorderLayout.NORTH);
 
-        JPanel showScores = new JPanel(new GridLayout(1, 2));
+        JPanel showScores = new JPanel(new GridLayout(1, 3));
+        showScores.add(scorePrintout((name)));
         showScores.add(scorePrintout(moveCount));
         showScores.add(scorePrintout(date));
         centerPanel.add(showScores, BorderLayout.CENTER);
@@ -117,6 +127,7 @@ public class Scores {
 
         return scorePanel;
     }
+    private String name = "name";
     private String moveCount = "moveCount";
     private String date = "date";
 }

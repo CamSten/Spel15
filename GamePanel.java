@@ -5,13 +5,14 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class GamePanel extends JFrame {
+public class GamePanel extends JFrame{
     private Board board;
     private boolean solved = false;
     private Scores scores;
     JLabel displayMoves;
     JPanel centerPanel;
     JPanel bottomPanel;
+    String userName;
 
     public GamePanel (Board board, Scores scores){
         this.board = board;
@@ -59,22 +60,52 @@ public class GamePanel extends JFrame {
         centerPanel.add(whenSolved());
         centerPanel.setBackground(Color.green);
         add(centerPanel);
-        scores.saveScore();
         revalidate();
         repaint();
         pack();
     }
     private JPanel whenSolved () {
-        JPanel endBoard = new JPanel();
+        JPanel endBoard = new JPanel(new BorderLayout());
         JLabel endMessage = new JLabel("Grattis! Du vann!");
+        endBoard.add(endMessage, BorderLayout.CENTER);
+        JPanel name = new JPanel(new GridLayout(1, 3));
+        JLabel askForName = new JLabel("Skriv ditt namn:");
+        JTextField inputName = new JTextField(15);
+        JButton saveName = new JButton("Spara namn");
+        saveName.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                userName = inputName.getText().trim();
+                if (userName.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Skriv ett namn först!");
+                } else {
+                    scores.saveScore(userName);
+                    showHighScore();
+                }
+            }
+        });
+        userName = inputName.getText();
+        name.add(askForName);
+        name.add(inputName);
+        name.add(saveName);
+        endBoard.add(endMessage, BorderLayout.NORTH);
+        endBoard.add(name, BorderLayout.CENTER);
         endBoard.setBackground(Color.green);
-        endBoard.add(endMessage);
         pack();
         return endBoard;
     }
     private void newGame() {
-
-        board.addTilesInOrder();
+        showGameBoard();
+        board.addTiles();
+        displayMoves.setText("0");
+        scores.resetScore();
+    }
+    public void showGameBoard (){
+        centerPanel.removeAll();
+        centerPanel.add(board);
+        revalidate();
+        repaint();
+        pack();
     }
 
     public void showMoves(){
@@ -96,5 +127,8 @@ public class GamePanel extends JFrame {
         revalidate();
         repaint();
         pack();
+    }
+    public String getUserName (){
+        return userName;
     }
 }
