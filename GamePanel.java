@@ -24,9 +24,11 @@ public class GamePanel extends JFrame{
         setBackground(Color.lightGray);
 
         JLabel gameName = new JLabel("15 Puzzle");
+        gameName.setFont(GameFont.topHeaderFont());
 
         JButton buttonNewGame = new JButton();
         buttonNewGame.setText("New game");
+        buttonNewGame.setFont(GameFont.defaultFont());
         buttonNewGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed (ActionEvent e) {
@@ -35,6 +37,7 @@ public class GamePanel extends JFrame{
         });
         JButton buttonScores = new JButton();
         buttonScores.setText("Highscores");
+        buttonScores.setFont(GameFont.defaultFont());
         buttonScores.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -43,6 +46,7 @@ public class GamePanel extends JFrame{
         });
         bottomPanel = new JPanel(new BorderLayout());
         displayMoves = new JLabel("0");
+        displayMoves.setFont(GameFont.defaultFont());
         bottomPanel.add(buttonNewGame, BorderLayout.WEST);
         bottomPanel.add(displayMoves, BorderLayout.CENTER);
         bottomPanel.add(buttonScores, BorderLayout.EAST);
@@ -67,11 +71,14 @@ public class GamePanel extends JFrame{
     private JPanel whenSolved () {
         JPanel endBoard = new JPanel(new BorderLayout());
         JLabel endMessage = new JLabel("Grattis! Du vann!");
+        endMessage.setFont(GameFont.topHeaderFont());
         endBoard.add(endMessage, BorderLayout.CENTER);
         JPanel name = new JPanel(new GridLayout(1, 3));
         JLabel askForName = new JLabel("Skriv ditt namn:");
+        askForName.setFont(GameFont.defaultFont());
         JTextField inputName = new JTextField(15);
         JButton saveName = new JButton("Spara namn");
+        saveName.setFont(GameFont.defaultFont());
         saveName.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

@@ -101,23 +101,37 @@ public class Scores {
         JPanel scorePanel = new JPanel(new BorderLayout());
 
         JLabel header = new JLabel("Highscores:");
+        header.setFont(GameFont.headerFont());
         header.setPreferredSize(new Dimension(500, 20));
 
         JPanel centerPanel = new JPanel(new BorderLayout());
 
         JPanel scoreHeader = new JPanel(new GridLayout(1,3));
         JLabel showName = new JLabel("Namn:");
+        showName.setFont(GameFont.defaultFont());
         JLabel showMoves = new JLabel("Antal drag:");
+        showMoves.setFont(GameFont.defaultFont());
         JLabel showDate = new JLabel("Datum:");
+        showDate.setFont(GameFont.defaultFont());
+
         scoreHeader.add(showName);
         scoreHeader.add(showMoves);
         scoreHeader.add(showDate);
         centerPanel.add(scoreHeader, BorderLayout.NORTH);
 
         JPanel showScores = new JPanel(new GridLayout(1, 3));
-        showScores.add(scorePrintout((name)));
-        showScores.add(scorePrintout(moveCount));
-        showScores.add(scorePrintout(date));
+        JTextArea namesArea = scorePrintout(name);
+        JTextArea movesArea = scorePrintout(moveCount);
+        JTextArea datesArea = scorePrintout(date);
+        namesArea.setFont(GameFont.defaultFont());
+        movesArea.setFont(GameFont.defaultFont());
+        datesArea.setFont(GameFont.defaultFont());
+        namesArea.setPreferredSize(new Dimension(150, 200));
+        movesArea.setPreferredSize(new Dimension(100, 200));
+        datesArea.setPreferredSize(new Dimension(200, 200));
+        showScores.add(namesArea);
+        showScores.add(movesArea);
+        showScores.add(datesArea);
         centerPanel.add(showScores, BorderLayout.CENTER);
 
         scorePanel.add(header, BorderLayout.NORTH);
