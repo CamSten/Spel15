@@ -2,8 +2,6 @@ package Spel15;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class Tile extends JButton {
     private int row;
@@ -18,9 +16,9 @@ public class Tile extends JButton {
         this.value = value;
         setText(text(value));
         setPreferredSize(new Dimension(70, 70));
-        setBackground(color(value));
+        setBackground(backgroundColor(value));
         setVisible(true);
-        setForeground(Color.lightGray);
+        setForeground(foregroundColor(value));
         setFont(new Font("Arial", Font.BOLD, 20));
     }
     private String text (int value) {
@@ -30,15 +28,24 @@ public class Tile extends JButton {
         }
         return tileText;
     }
-    private Color color (int value) {
+    private Color backgroundColor(int value) {
         if (value == 0) {
-            return Color.WHITE;
+            return Color.white;
         } else {
-            return Color.BLUE;
+            return Color.pink;
+        }
+    }
+    private Color foregroundColor (int value) {
+        if (value == 0){
+            return Color.white;
+        }
+        else {
+            return Color.magenta;
         }
     }
     public void adjustTile(int value) {
-        setBackground(color(value));
+        setBackground(backgroundColor(value));
+        setForeground(foregroundColor(value));
         setText(text(value));
     }
 

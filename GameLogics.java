@@ -30,7 +30,6 @@ public class GameLogics implements ActionListener {
             panel.showMoves();
             if (board.checkIfSolved()) {
                 endGame();
-                System.out.println("checkTileAction is working");
             }
         }
     }

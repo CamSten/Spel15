@@ -12,6 +12,7 @@ public class GamePanel extends JFrame{
     JLabel displayMoves;
     JPanel centerPanel;
     JPanel bottomPanel;
+    JButton bottomRight;
     String userName;
 
     public GamePanel (Board board, Scores scores){
@@ -27,7 +28,7 @@ public class GamePanel extends JFrame{
         gameName.setFont(GameFont.topHeaderFont());
 
         JButton buttonNewGame = new JButton();
-        buttonNewGame.setText("New game");
+        buttonNewGame.setText("Nytt spel");
         buttonNewGame.setFont(GameFont.defaultFont());
         buttonNewGame.addActionListener(new ActionListener() {
             @Override
@@ -35,10 +36,19 @@ public class GamePanel extends JFrame{
                 newGame();
             }
         });
-        JButton buttonScores = new JButton();
-        buttonScores.setText("Highscores");
-        buttonScores.setFont(GameFont.defaultFont());
-        buttonScores.addActionListener(new ActionListener() {
+        JButton buttonClearScores = new JButton();
+        buttonClearScores.setText("Radera highscores");
+        buttonClearScores.setFont(GameFont.defaultFont());
+        buttonClearScores.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                scores.clearSavedScores();
+            }
+        });
+
+        bottomRight = new JButton("Highscores");
+        bottomRight.setFont(GameFont.defaultFont());
+        bottomRight.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 showHighScore();
@@ -49,7 +59,7 @@ public class GamePanel extends JFrame{
         displayMoves.setFont(GameFont.defaultFont());
         bottomPanel.add(buttonNewGame, BorderLayout.WEST);
         bottomPanel.add(displayMoves, BorderLayout.CENTER);
-        bottomPanel.add(buttonScores, BorderLayout.EAST);
+        bottomPanel.add(bottomRight, BorderLayout.EAST);
 
         add(gameName, BorderLayout.NORTH);
         centerPanel = new JPanel();
@@ -62,7 +72,7 @@ public class GamePanel extends JFrame{
         solved = true;
         centerPanel.removeAll();
         centerPanel.add(whenSolved());
-        centerPanel.setBackground(Color.green);
+        centerPanel.setBackground(Color.pink);
         add(centerPanel);
         revalidate();
         repaint();
@@ -97,7 +107,7 @@ public class GamePanel extends JFrame{
         name.add(saveName);
         endBoard.add(endMessage, BorderLayout.NORTH);
         endBoard.add(name, BorderLayout.CENTER);
-        endBoard.setBackground(Color.green);
+        endBoard.setBackground(Color.pink);
         pack();
         return endBoard;
     }
@@ -131,6 +141,17 @@ public class GamePanel extends JFrame{
         highscores.add(scores.scorePanel());
         centerPanel.add(highscores);
         add(centerPanel);
+        bottomRight.setText("Radera highscores");
+        ActionListener[]listener = bottomRight.getActionListeners();
+            bottomRight.removeActionListener(listener[0]);
+
+        bottomRight.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                scores.clearSavedScores();
+                showHighScore();
+            }
+        });
         revalidate();
         repaint();
         pack();

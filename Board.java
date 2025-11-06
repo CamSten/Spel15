@@ -147,7 +147,6 @@ public class Board extends JPanel {
                 }
             }
         }
-        System.out.println("checkIfSolved is working");
         return true;
     }
     public Tile getEmptyTile(){
@@ -166,16 +165,6 @@ public class Board extends JPanel {
         tile1.adjustTile(tile1.getValue());
         tile2.adjustTile(tile2.getValue());
     }
-    /*If N(width is odd,
-     *   then puzzle instance is solvable if number of inversions is even in the input state.
-     * If N is even, puzzle instance is solvable if:
-     *   the blank is on an even row counting from the bottom
-     *   (second-last, fourth-last, etc.)
-     *   AND number of inversions is odd.
-     *  OR the blank is on an odd row counting from the bottom
-     *   (last, third-last, fifth-last, etc.)
-     *   AND number of inversions is even.
-     *  For all other cases, the puzzle instance is not solvable.*/
     public boolean checkIfSolvable() {
         int numberOfTiles = values.size();
         int gridWidth = (int) Math.sqrt(numberOfTiles);
