@@ -21,7 +21,7 @@ import java.util.List;
 public class Scores {
     List<String> scoreList = new ArrayList<>();
     private int moves = 0;
-    private int maxSavedScores = 25;
+    private final int maxSavedScores = 25;
     private enum scoreValue {NAME, MOVES, DATE }
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMMM yyyy HH:mm");
 
@@ -71,11 +71,11 @@ public class Scores {
             removeScore();
         }
         Path saveTo = getPath();
-        try (BufferedWriter saving = Files.newBufferedWriter(saveTo, StandardOpenOption.CREATE, StandardOpenOption.APPEND))
-        {LocalDateTime now = LocalDateTime.now();
+        try (BufferedWriter saving = Files.newBufferedWriter(saveTo, StandardOpenOption.CREATE, StandardOpenOption.APPEND)) {
+            LocalDateTime now = LocalDateTime.now();
             String formatted = now.format(formatter);
             saving.write(userName.trim() + ";" + moves + ";" + formatted + "\n");
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

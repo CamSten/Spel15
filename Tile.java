@@ -8,7 +8,6 @@ public class Tile extends JButton {
     private int col;
     private int value;
     private boolean isActive = false;
-    private boolean isEmpty = false;
 
     public Tile (int row, int col, int value){
         this.row = row;

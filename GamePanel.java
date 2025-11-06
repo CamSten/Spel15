@@ -16,8 +16,6 @@ public class GamePanel extends JFrame{
     String userName;
 
     public GamePanel (Board board, Scores scores){
-        getContentPane().setBackground(GameColors.defaultBackground()); getRootPane().setBackground(GameColors.defaultBackground());
-        getLayeredPane().setBackground(GameColors.defaultBackground());
         this.board = board;
         setTitle("15 Puzzle");
 

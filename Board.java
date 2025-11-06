@@ -5,12 +5,10 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Scanner;
 
 public class Board extends JPanel {
     public List<Tile> tiles = new ArrayList<>();
     private List<Integer>values = new ArrayList<>();
-    Scanner scan = new Scanner(System.in);
 
 
     public Board(boolean randomizeTiles) {
@@ -172,7 +170,7 @@ public class Board extends JPanel {
         int emptyIndex = values.indexOf(0);
         int rowOfEmptyTileFromBottom = gridWidth - (emptyIndex/gridWidth);
 
-        if (gridWidth%2 !=0){
+        if (gridWidth % 2 != 0){
             if (checkIfEvenInversions()){
                 return true;
             }
