@@ -164,6 +164,7 @@ public class Board extends JPanel {
         tile2.adjustTile(tile2.getValue());
     }
     public boolean checkIfSolvable() {
+        //mathematics logic from https://www.geeksforgeeks.org/dsa/check-instance-15-puzzle-solvable/
         int numberOfTiles = values.size();
         int gridWidth = (int) Math.sqrt(numberOfTiles);
 
