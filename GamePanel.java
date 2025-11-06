@@ -16,16 +16,17 @@ public class GamePanel extends JFrame{
     String userName;
 
     public GamePanel (Board board, Scores scores){
+        getContentPane().setBackground(GameColors.defaultBackground()); getRootPane().setBackground(GameColors.defaultBackground());
+        getLayeredPane().setBackground(GameColors.defaultBackground());
         this.board = board;
+        setTitle("15 Puzzle");
+
         this.scores = scores;
         setLayout(new BorderLayout());
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setBackground(Color.lightGray);
-
-        JLabel gameName = new JLabel("15 Puzzle");
-        gameName.setFont(GameFont.topHeaderFont());
+        setBackground(GameColors.defaultBackground());
 
         JButton buttonNewGame = new JButton();
         buttonNewGame.setText("Nytt spel");
@@ -60,10 +61,11 @@ public class GamePanel extends JFrame{
         bottomPanel.add(buttonNewGame, BorderLayout.WEST);
         bottomPanel.add(displayMoves, BorderLayout.CENTER);
         bottomPanel.add(bottomRight, BorderLayout.EAST);
-
-        add(gameName, BorderLayout.NORTH);
+        bottomPanel.setOpaque(true);
         centerPanel = new JPanel();
         centerPanel.add(board);
+        centerPanel.setOpaque(true);
+        centerPanel.setBackground(GameColors.defaultBackground());
         add(centerPanel, BorderLayout.CENTER);
         add(bottomPanel, BorderLayout.SOUTH);
         pack();
@@ -80,10 +82,16 @@ public class GamePanel extends JFrame{
     }
     private JPanel whenSolved () {
         JPanel endBoard = new JPanel(new BorderLayout());
+        endBoard.setBackground(GameColors.defaultBackground());
+        endBoard.setOpaque(true);
+
         JLabel endMessage = new JLabel("Grattis! Du vann!");
         endMessage.setFont(GameFont.topHeaderFont());
+        endMessage.setForeground(GameColors.headerText());
         endBoard.add(endMessage, BorderLayout.CENTER);
         JPanel name = new JPanel(new GridLayout(1, 3));
+        name.setBackground(GameColors.defaultBackground());
+        name.setOpaque(true);
         JLabel askForName = new JLabel("Skriv ditt namn:");
         askForName.setFont(GameFont.defaultFont());
         JTextField inputName = new JTextField(15);

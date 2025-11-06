@@ -200,6 +200,8 @@ public class Scores {
     public JPanel scorePanel () {
         readSaveFile();
         JPanel scorePanel = new JPanel(new BorderLayout());
+        scorePanel.setBackground(GameColors.defaultBackground());
+        scorePanel.setOpaque(true);
 
         JLabel header = new JLabel("Highscores:");
         header.setFont(GameFont.headerFont());
@@ -254,6 +256,8 @@ public class Scores {
         centerPanel.add(scoreHeader, BorderLayout.NORTH);
 
         JPanel showScores = new JPanel(new GridLayout(1, 3));
+        showScores.setBackground(GameColors.defaultBackground());
+        showScores.setOpaque(true);
 
         namesArea.setFont(GameFont.defaultFont());
         movesArea.setFont(GameFont.defaultFont());
@@ -274,7 +278,7 @@ public class Scores {
 
         scorePanel.add(header, BorderLayout.NORTH);
         scorePanel.add(centerPanel, BorderLayout.CENTER);
-        scorePanel.setBackground(Color.pink);
+        scorePanel.setBackground(GameColors.defaultBackground());
         scorePanel.setVisible(true);
 
         return scorePanel;

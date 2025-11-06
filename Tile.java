@@ -16,9 +16,9 @@ public class Tile extends JButton {
         this.value = value;
         setText(text(value));
         setPreferredSize(new Dimension(70, 70));
-        setBackground(backgroundColor(value));
+        setBackground(GameColors.background(value));
         setVisible(true);
-        setForeground(foregroundColor(value));
+        setForeground(GameColors.foreground(value));
         setFont(new Font("Arial", Font.BOLD, 20));
     }
     private String text (int value) {
@@ -28,24 +28,10 @@ public class Tile extends JButton {
         }
         return tileText;
     }
-    private Color backgroundColor(int value) {
-        if (value == 0) {
-            return Color.white;
-        } else {
-            return Color.pink;
-        }
-    }
-    private Color foregroundColor (int value) {
-        if (value == 0){
-            return Color.white;
-        }
-        else {
-            return Color.magenta;
-        }
-    }
+
     public void adjustTile(int value) {
-        setBackground(backgroundColor(value));
-        setForeground(foregroundColor(value));
+        setBackground(GameColors.background(value));
+        setForeground(GameColors.foreground(value));
         setText(text(value));
     }
 
