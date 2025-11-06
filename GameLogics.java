@@ -8,6 +8,7 @@ public class GameLogics implements ActionListener {
     private Board board;
     private GamePanel panel;
 
+
     public GameLogics(Board board, GamePanel panel) {
         this.board = board;
         this.panel = panel;

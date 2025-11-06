@@ -13,48 +13,39 @@ public class Board extends JPanel {
     Scanner scan = new Scanner(System.in);
 
 
-    public Board() {
+    public Board(boolean randomizeTiles) {
         setLayout(new GridLayout(4, 4));
-        System.out.println(tileLayout);
-        String choice = scan.nextLine();
-        switch (choice) {
-            case "1": {
-                addTiles();
-                break;
-            }
-            case "2": {
-                addTilesInOrder();
-                break;
-            }
-            default: {
-                System.out.println("Inget giltigt svarsalternativ har angivits.");
-            }
+        if (randomizeTiles){
+            addTiles();
+        }
+        else {
+            addTilesInOrder();
         }
     }
 
     public void addTiles() {
         values = getValuesForSolvablePuzzle();
 
-            if (tiles.size() == 16) {
-                for (int i = 0; i < tiles.size(); i++) {
-                    Tile tile = tiles.get(i);
-                    int value = values.get(i);
-                    tile.setValue(value);
-                    tile.adjustTile(value);
-                }
-            } else {
-                tiles.clear();
-                removeAll();
-                for (int i = 0; i < values.size(); i++) {
-                    int row = (i / 4);
-                    int col = i % 4;
-                    Tile tile = new Tile(row, col, values.get(i));
-                    tiles.add(tile);
-                    add(tile);
-                }
+        if (tiles.size() == 16) {
+            for (int i = 0; i < tiles.size(); i++) {
+                Tile tile = tiles.get(i);
+                int value = values.get(i);
+                tile.setValue(value);
+                tile.adjustTile(value);
             }
-            revalidate();
-            repaint();
+        } else {
+            tiles.clear();
+            removeAll();
+            for (int i = 0; i < values.size(); i++) {
+                int row = (i / 4);
+                int col = i % 4;
+                Tile tile = new Tile(row, col, values.get(i));
+                tiles.add(tile);
+                add(tile);
+            }
+        }
+        revalidate();
+        repaint();
     }
     public void addTilesInOrder() {
         List<Integer> values = getOrderedValues();
@@ -229,6 +220,5 @@ public class Board extends JPanel {
         }
         return false;
     }
-    private String tileLayout = "Ange 1 för slumpade siffror.\nAnge 2 för siffror i ordning: ";
 }
 
